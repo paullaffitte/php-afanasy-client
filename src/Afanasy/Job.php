@@ -86,7 +86,7 @@ class Job {
 		$this->data["blocks"] = [];
 		foreach($this->blocks as $block) {
 			$block->fillTasks();
-			$this->data["blocks"][] = $block->data;
+			$this->data["blocks"][] = $block->getData();
 			}
 		}
 

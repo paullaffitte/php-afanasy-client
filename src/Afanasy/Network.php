@@ -8,11 +8,13 @@ class Network {
 
 	const TIMEOUT = 5;
 
-	public $socket = false;
-	public $connected = false;
-	public $header_size;
-	public $address;
-	public $port;
+	private $socket = false;
+	private $connected = false;
+	private $header_size;
+	private $address;
+	private $port;
+
+	private $verbose = true;
 
 	public function __construct($address, $port) {
 		$this->address = $address;
@@ -70,7 +72,8 @@ class Network {
 
 	public function sendJob($job) {
 		$this->connect();
-		$this->sendMessage($job->getJSON());
+		$json = $job->getJSON();
+		$this->sendMessage($json, false);
 		$ret = $this->getResponse();
 		$this->disconnect();
 		return $ret;
@@ -122,9 +125,13 @@ class Network {
     		throw new Exception("Not connected");
 		flush();
 		$response = "";
-		socket_read($this->socket, strlen("AFANASY "));
+		$header = socket_read($this->socket, strlen("AFANASY "));
+		if ( empty($header) )
+			throw new Exception("server not responding");
 
 		$header = socket_read($this->socket, strlen("X JSON"));
+		if ( empty($header) )
+			throw new Exception("server not responding");
 
 		do {
 			switch( ($pos = strpos($header, 'J')) ) {
@@ -143,7 +150,7 @@ class Network {
 					$header .= socket_read($this->socket, 4);
 					break;
 				default:
-					throw new Exception("AFANASY header wrong parsing");
+					throw new Exception("wrong parsing result");
 				}
 			}
 		while( $pos === false );

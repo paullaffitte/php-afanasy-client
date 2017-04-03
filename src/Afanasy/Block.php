@@ -9,10 +9,16 @@ class Block {
 
 	public function __construct($blockname='block', $service='generic') {
 		$this->data["name"] = $blockname;
-		$this->data["service"] = $service;
 		$this->data["capacity"] = 1;
-		$this->data["working_directory"] = getenv('PWD');
+		$this->data["working_directory"] = "/tmp";
 		$this->data["numeric"] = false;
+
+		$this->setService($service);
+		$this->setParser('generic');
+		}
+
+	public function getData() {
+		return $this->data;
 		}
 
 	public function addTask(&$task) {
@@ -26,8 +32,8 @@ class Block {
 		}
 
 	public function setParser($parser, $nocheck=true) {
-		if ( empty($parse) )
-			throw new Exception("service can not be empty");
+		if ( empty($parser) )
+			throw new Exception("parser can not be empty");
 		$this->data["parser"] = $parser;
 		}
 
@@ -404,7 +410,7 @@ class Block {
 		if ( count($this->tasks) )
 			$this->data["tasks"] = [];
 			foreach($this->tasks as $task)
-				array_push($this->data["tasks"], $task->data);
+				array_push($this->data["tasks"], $task->getData());
 		}
 	}
 
