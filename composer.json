@@ -1,0 +1,23 @@
+{
+    "name": "abuisine/php-afanasy-client",
+    "description": "A PHP rewrite of the Afanasy python client",
+    "type": "library",
+    "homepage": "https://github.com/abuisine/php-afanasy-client",
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Alexandre Buisine",
+            "email": "alexandrejabuisine@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-0": {
+            "Afanasy": "src/",
+        }
+    }
+}
