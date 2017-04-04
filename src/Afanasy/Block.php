@@ -301,7 +301,7 @@ class Block {
 	// 	:param value:
 	// 	:return:
 	// 	"""
-	// 	if checkRegExp(value):
+	// 	if Utils::checkRegExp(value):
 	// 		$this->data["hosts_mask"] = value
 
 	// public function setHostsMaskExclude(, value)
@@ -313,11 +313,11 @@ class Block {
 	// 	:param value:
 	// 	:return:
 	// 	"""
-	// 	if checkRegExp(value):
+	// 	if Utils::checkRegExp(value):
 	// 		$this->data["hosts_mask_exclude"] = value
 
 	public function setDependMask($value) {
-		if ( checkRegExp($value) )
+		if ( Utils::checkRegExp($value) )
 			$this->data["depend_mask"] = $value;
 		}
 
@@ -331,7 +331,7 @@ class Block {
 	// 	:param value:
 	// 	:return:
 	// 	"""
-	// 	if checkRegExp(value):
+	// 	if Utils::checkRegExp(value):
 	// 		$this->data["tasks_depend_mask"] = value
 
 	// public function setNeedProperties(, value)
@@ -343,7 +343,7 @@ class Block {
 	// 	:param value:
 	// 	:return:
 	// 	"""
-	// 	if checkRegExp(value):
+	// 	if Utils::checkRegExp(value):
 	// 		$this->data["need_properties"] = value
 
 	// # public function setGenThumbnails(, value = True)

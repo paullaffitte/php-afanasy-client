@@ -161,7 +161,7 @@ class Job {
 
 
 	public function setHostsMask($value) {
-		if ( checkRegExp($value) )
+		if ( Utils::checkRegExp($value) )
 			$this->data["hosts_mask"] = $value;
 		}
 
@@ -173,7 +173,7 @@ class Job {
 	// 	:param value:
 	// 	:return:
 	// 	"""
-	// 	if checkRegExp(value):
+	// 	if Utils::checkRegExp(value):
 	// 		$this->data["hosts_mask_exclude"] = value
 	// }
 
@@ -185,7 +185,7 @@ class Job {
 	// 	:param value:
 	// 	:return:
 	// 	"""
-	// 	if checkRegExp(value):
+	// 	if Utils::checkRegExp(value):
 	// 		$this->data["depend_mask"] = value
 	// }
 
@@ -197,7 +197,7 @@ class Job {
 	// 	:param value:
 	// 	:return:
 	// 	"""
-	// 	if checkRegExp(value):
+	// 	if Utils::checkRegExp(value):
 	// 		$this->data["depend_mask_global"] = value
 	// }
 
@@ -209,7 +209,7 @@ class Job {
 	// 	:param value:
 	// 	:return:
 	// 	"""
-	// 	if checkRegExp(value):
+	// 	if Utils::checkRegExp(value):
 	// 		$this->data["need_os"] = value
 	// }
 
@@ -221,7 +221,7 @@ class Job {
 	// 	:param value:
 	// 	:return:
 	// 	"""
-	// 	if checkRegExp(value):
+	// 	if Utils::checkRegExp(value):
 	// 		$this->data["need_properties"] = value
 	// }
 
