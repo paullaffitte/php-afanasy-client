@@ -24,6 +24,10 @@ class Job {
 		$this->blocks[] = $block;
 		}
 
+	public function getBlocks() {
+		return $this->blocks;
+		}
+
 	public function setName($name) {
 		if ( $name and strlen($name) )
 			$this->data["name"] = $name;
