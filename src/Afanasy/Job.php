@@ -109,9 +109,11 @@ class Job {
 		if ( ! array_key_exists("folders", $this->data) ) {
 			$this->data["folders"] = [];
 			# Try to set output folder from files:
-			foreach($this->blocks as $block)
-				if ( in_array("files", $block->data) and count($block->data["files"]) )
-					$this->data["folders"]["output"] = dirname( $block.data["files"][0] );
+			foreach($this->blocks as $block) {
+				$data = $block->getData();
+				if ( in_array("files", $data) and count($data["files"]) )
+					$this->data["folders"]["output"] = dirname( $data["files"][0] );
+				}
 			}
 		$obj = array("job" => $this->data);
 
