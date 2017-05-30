@@ -76,6 +76,10 @@ class Network {
 		$this->sendMessage($json, false);
 		$ret = $this->getResponse();
 		$this->disconnect();
+		if ( !is_array($res) )
+			throw new Exception("invalid response from server");
+		if ( array_key_exists('error', $ret) )
+			throw new Exception($ret['error']);
 		return $ret;
 		}
 
