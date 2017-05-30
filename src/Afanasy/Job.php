@@ -106,7 +106,7 @@ class Job {
 		}
 
 	public function getData() {
-		if ( count($this->blocks) == 0 )
+		if ( !count($this->blocks) )
 			throw new Exception("zero block job");
 
 		$this->fillBlocks();

@@ -2,6 +2,8 @@
 
 namespace Afanasy;
 
+use Exception;
+
 class Block {
 
 	private $data = [];
@@ -18,6 +20,9 @@ class Block {
 		}
 
 	public function getData() {
+		if ( !count($this->tasks) )
+			throw new Exception("zero task block");
+		
 		return $this->data;
 		}
 
@@ -38,18 +43,13 @@ class Block {
 		}
 
 	public function setNumeric($start=1, $end=1, $pertask=1, $increment=1) {
-		if ( count($this->tasks) ) {
-			print("Error: Block.setNumeric: Block already has tasks.");
-			return;
-			}
-		if ( $end < $start ) {
-			print("Error: Block.setNumeric: end < start (" . $end . " < " . $start . ")");
-			$end = $start;
-			}
-		if ( $pertask < 1 ) {
-			print("Error: Block.setNumeric: pertask < 1 (" . $pertask . "%d < 1)");
-			$pertask = 1;	
-			}
+		if ( count($this->tasks) )
+			throw new Exception("Block.setNumeric: Block already has tasks.");
+		if ( $end < $start )
+			throw new Exception("Block.setNumeric: end < start ({$end} < {$start})");
+		if ( $pertask < 1 )
+			throw new Exception("Block.setNumeric: pertask < 1 ({$pertask} < 1)");
+
 		$this->data["numeric"] = true;
 		$this->data["frame_first"] = $start;
 		$this->data["frame_last"] = $end;
