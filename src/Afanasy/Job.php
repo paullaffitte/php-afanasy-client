@@ -2,6 +2,8 @@
 
 namespace Afanasy;
 
+use Exception;
+
 class Job {
 
 	const STATE_DONE	= " DON";
@@ -95,13 +97,17 @@ class Job {
 		}
 
 	public function output() {
-		$this->fillBlocks();
-		print(json_encode($this->data, $options=JSON_PRETTY_PRINT));
+		print(json_encode($this->getData(), $options=JSON_PRETTY_PRINT));
 		}
 
 	public function getJSON() {
+		$obj = array("job" => $this->getData());
+		return json_encode($obj);
+		}
+
+	public function getData() {
 		if ( count($this->blocks) == 0 )
-			print('Error: Job has no blocks');
+			throw new Exception("zero block job");
 
 		$this->fillBlocks();
 
@@ -115,9 +121,7 @@ class Job {
 					$this->data["folders"]["output"] = dirname( $data["files"][0] );
 				}
 			}
-		$obj = array("job" => $this->data);
-
-		return json_encode($obj);
+		return $this->data;
 		}
 
 	public function setAnnotation($value) {
