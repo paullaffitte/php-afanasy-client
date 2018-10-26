@@ -5,16 +5,7 @@ namespace Afanasy;
 use Exception;
 
 class Job {
-
-	const STATE_READY					= " RDY";
-	const STATE_RUNNING					= " RUN";
-	const STATE_DONE					= " DON";
-	const STATE_ERROR					= " ERR";
-	const STATE_SKIPPED					= " SKP";
-	const STATE_WAITING_DEPENDENCIES	= " WD";
-	const STATE_WAITING_TIME			= " WT";
-	const STATE_PREVIEW					= " PPA";
-	const STATE_OFFLINE					= " OFF";
+	use HasState;
 
 	private $data = [];
 	private $blocks = [];
@@ -111,6 +102,15 @@ class Job {
 	public function getJSON() {
 		$obj = array("job" => $this->getData());
 		return json_encode($obj);
+		}
+
+	public function fromJSON($json) {
+		$this->data = $json;
+		$this->blocks = [];
+		if (array_key_exists('blocks', $json))
+			foreach ($json['blocks'] as $block)
+				$this->blocks[] = (new Block())->fromJSON($block);
+		return $this;
 		}
 
 	public function getData() {

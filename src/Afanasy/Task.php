@@ -3,6 +3,7 @@
 namespace Afanasy;
 
 class Task {
+	use HasState;
 
 	private $data;
 
@@ -12,6 +13,11 @@ class Task {
 
 	public function getData() {
 		return $this->data;
+		}
+
+	public function fromJSON($json) {
+		$this->data = $json;
+		return $this;
 		}
 
 	public function setName($name) {

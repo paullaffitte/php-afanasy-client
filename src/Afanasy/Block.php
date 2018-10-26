@@ -5,6 +5,7 @@ namespace Afanasy;
 use Exception;
 
 class Block {
+	use HasState;
 
 	private $data = [];
 	private $tasks = [];
@@ -22,8 +23,17 @@ class Block {
 	public function getData() {
 		if ( !count($this->tasks) )
 			throw new Exception("zero task block");
-		
+
 		return $this->data;
+		}
+
+	public function fromJSON($json) {
+		$this->data = $json;
+		$this->tasks = [];
+		if (array_key_exists('tasks', $json))
+			foreach ($json['tasks'] as $task)
+				$this->tasks[] = (new Block())->fromJSON($task);
+		return $this;
 		}
 
 	public function addTask(&$task) {
