@@ -6,7 +6,15 @@ use Exception;
 
 class Job {
 
-	const STATE_DONE	= " DON";
+	const STATE_READY					= " RDY";
+	const STATE_RUNNING					= " RUN";
+	const STATE_DONE					= " DON";
+	const STATE_ERROR					= " ERR";
+	const STATE_SKIPPED					= " SKP";
+	const STATE_WAITING_DEPENDENCIES	= " WD";
+	const STATE_WAITING_TIME			= " WT";
+	const STATE_PREVIEW					= " PPA";
+	const STATE_OFFLINE					= " OFF";
 
 	private $data = [];
 	private $blocks = [];
@@ -297,14 +305,14 @@ class Job {
 	// 	"""
 	// 	$this->data["offline"] = True
 	// }
-		
+
 	// public function setTimeLife(, value)
 	// {
 	// 	"""Set job's time-life after which it will automatically be deleted.
 
 	// 	:param value: time in seconds
 	// 	"""
-	// 	# this will only pass positive int		
+	// 	# this will only pass positive int
 	// 	if str(value).isdigit():
 	// 		$this->data['time_life'] = value
 	// }
