@@ -8,6 +8,10 @@
         {
             "name": "Alexandre Buisine",
             "email": "alexandrejabuisine@gmail.com"
+        },
+        {
+            "name": "Paul Laffitte",
+            "email": "paul.laffitte@epitech.eu"
         }
     ],
     "require": {
