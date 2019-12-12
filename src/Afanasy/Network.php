@@ -26,8 +26,12 @@ class Network {
 		}
 
 	public function deleteJob($id) {
-		return $this->action('jobs', [$id], [
-			"type" => "delete",
+		return $this->deleteJobs([$id]);
+		}
+
+	public function deleteJobs($ids) {
+		return $this->action('jobs', $ids, [
+			"type"	=> "delete"
 			]);
 		}
 
@@ -35,6 +39,22 @@ class Network {
 		return $this->get([
 			"type"		=> "jobs",
 			"user_name"	=> $user
+			]);
+		}
+
+	public function getJobById($id) {
+		$jobs = $this->getJobByIds([ $id ])['jobs'];
+
+		if ( count($jobs) == 0 )
+			throw new Exception("Job with id {$id} not found");
+
+		return $jobs[0];
+		}
+
+	public function getJobByIds($ids) {
+		return $this->get([
+			"type"		=> "jobs",
+			"ids"		=> $ids
 			]);
 		}
 
@@ -53,6 +73,18 @@ class Network {
 			throw new Exception($ret['error']);
 
 		return $ret;
+		}
+
+	public function restartErrors($ids) {
+		$this->action('jobs', $ids, [
+			'type' => 'restart_errors'
+			]);
+		}
+
+	public function restartErrorHosts($ids) {
+		$this->action('jobs', $ids, [
+			'type' => 'reset_error_hosts'
+			]);
 		}
 
 	public function get($filters, $json_encode = true) {
