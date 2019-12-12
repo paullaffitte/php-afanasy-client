@@ -2,9 +2,11 @@
 
 namespace Afanasy;
 
+use Afanasy\States;
+
 trait HasState {
 	public function hasState($state) {
-		return getFromArray($this->data, 'state', true) == $state;
+		return States::arrayHasState($this->data, $state);
 		}
 	}
 
