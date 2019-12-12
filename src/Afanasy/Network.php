@@ -13,73 +13,70 @@ class Network {
 	private $header_size;
 	private $address;
 	private $port;
+	private $userName;
+	private $hostName;
 
 	private $verbose = true;
 
-	public function __construct($address, $port) {
+	public function __construct($address, $port, $user='coord@pc') {
 		$this->address = $address;
 		$this->port = $port;
 		$this->header_size = 2048;
-		// $this->header_size = strlen('AFANASY ' . ' JSON') + 8;
+		[ $this->userName, $this->hostName ] = explode('@', $user);
 		}
 
-	public function deleteJob($username, $id) {
-		$this->connect();
-		$this->sendMessage([
-			"action"	=>	[
-				"ids"		=> [$id],
-				"user_name"	=> $username,
-				"host_name"	=> "dummy",
-				"type"		=> "jobs",
-				"mask"		=> ".*",
-				"operation"	=> [
-					"type"	=> "delete"
-					]
-				]
+	public function deleteJob($id) {
+		return $this->action('jobs', [$id], [
+			"type" => "delete",
 			]);
-
-		$ret = $this->getResponse();
-		$this->disconnect();
-		return $ret;
 		}
 
 	public function getJobsByUser($user) {
-		$this->connect();
-		$this->sendMessage([
-			"get"	=>	[
-				"type"		=> "jobs",
-				"user_name"	=> $username
-				]
+		return $this->get([
+			"type"		=> "jobs",
+			"user_name"	=> $user
 			]);
-
-		$ret = $this->getResponse();
-		$this->disconnect();
-		return $ret;
 		}
 
 	public function getAllJobs() {
-		$this->connect();
-		$this->sendMessage([
-			"get"	=>	[
-				"type"	=> "jobs"
-				]
+		return $this->get([
+			"type"	=> "jobs"
 			]);
-
-		$ret = $this->getResponse();
-		$this->disconnect();
-		return $ret;
 		}
 
 	public function sendJob($job) {
-		$this->connect();
-		$json = $job->getJSON();
-		$this->sendMessage($json, false);
-		$ret = $this->getResponse();
-		$this->disconnect();
+		$ret = $this->execute($job->getJSON(), false);
+
 		if ( !is_array($ret) )
 			throw new Exception("invalid response from server");
 		if ( array_key_exists('error', $ret) )
 			throw new Exception($ret['error']);
+
+		return $ret;
+		}
+
+	public function get($filters, $json_encode = true) {
+		return $this->execute([ 'get' => $filters ], $json_encode);
+		}
+
+	public function action($type, $ids, $operation, $json_encode = true) {
+		return $this->execute([
+			'action' => [
+				'user_name' => $this->userName,
+				'host_name' => $this->hostName,
+				'type' => $type,
+				'ids' => $ids,
+				'operation' => $operation
+				]
+			], $json_encode);
+		}
+
+	protected function execute($message, $json_encode = true) {
+		$this->connect();
+		$this->sendMessage($message, $json_encode);
+
+		$ret = $this->getResponse();
+		$this->disconnect();
 		return $ret;
 		}
 
