@@ -10,18 +10,16 @@ class Network {
 
 	private $socket = false;
 	private $connected = false;
-	private $header_size;
 	private $address;
 	private $port;
-	private $userName;
-	private $hostName;
+	protected $userName;
+	protected $hostName;
 
 	private $verbose = true;
 
 	public function __construct($address, $port, $user='coord@pc') {
 		$this->address = $address;
 		$this->port = $port;
-		$this->header_size = 2048;
 		[ $this->userName, $this->hostName ] = explode('@', $user);
 		}
 
@@ -31,7 +29,9 @@ class Network {
 
 	public function deleteJobs($ids) {
 		return $this->action('jobs', $ids, [
-			"type"	=> "delete"
+			'operation' => [
+				'type'	=> 'delete',
+				]
 			]);
 		}
 
@@ -77,13 +77,17 @@ class Network {
 
 	public function restartErrors($ids) {
 		$this->action('jobs', $ids, [
-			'type' => 'restart_errors'
+			'operation' => [
+				'type' => 'restart_errors',
+				]
 			]);
 		}
 
 	public function restartErrorHosts($ids) {
 		$this->action('jobs', $ids, [
-			'type' => 'reset_error_hosts'
+			'operation' => [
+				'type' => 'reset_error_hosts',
+				]
 			]);
 		}
 
@@ -91,15 +95,14 @@ class Network {
 		return $this->execute([ 'get' => $filters ], $json_encode);
 		}
 
-	public function action($type, $ids, $operation, $json_encode = true) {
+	public function action($type, $ids, $options, $json_encode = true) {
 		return $this->execute([
-			'action' => [
+			'action' => array_merge($options, [
 				'user_name' => $this->userName,
 				'host_name' => $this->hostName,
 				'type' => $type,
-				'ids' => $ids,
-				'operation' => $operation
-				]
+				'ids' => $ids
+				]),
 			], $json_encode);
 		}
 
