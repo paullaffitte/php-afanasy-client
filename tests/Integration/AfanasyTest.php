@@ -16,7 +16,7 @@ class AfanasyTest extends TestCase {
 	private $jobCount;
 
 	public function setUp() {
-		Dotenv::createImmutable(__DIR__)->load();
+		Dotenv::createImmutable(__DIR__.'/..')->load();
 		$this->network = new Network(getenv('AF_SERVER'), getenv('AF_SERVERPORT'), getenv('AF_USER'));
 		$this->jobCount = 1;
 	}

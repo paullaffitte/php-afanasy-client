@@ -27,6 +27,9 @@
         }
     },
     "scripts": {
-        "tests": "phpunit tests --testdox"
+        "tests": "phpunit --testdox",
+        "tests:integration": "composer run tests -- --testsuite Integration",
+        "tests:unit": "composer run tests -- --testsuite Unit",
+        "tests:suites": "composer run tests -- --list-suites"
     }
 }
