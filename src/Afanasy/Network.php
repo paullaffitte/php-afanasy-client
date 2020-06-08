@@ -21,26 +21,26 @@ class Network {
 		$this->address = $address;
 		$this->port = $port;
 		[ $this->userName, $this->hostName ] = explode('@', $user);
-		}
+	}
 
 	public function deleteJob($id) {
 		return $this->deleteJobs([$id]);
-		}
+	}
 
 	public function deleteJobs($ids) {
 		return $this->action('jobs', $ids, [
 			'operation' => [
 				'type'	=> 'delete',
-				]
-			]);
-		}
+			]
+		]);
+	}
 
 	public function getJobsByUser($user) {
 		return $this->get([
 			"type"		=> "jobs",
 			"user_name"	=> $user
-			]);
-		}
+		]);
+	}
 
 	public function getJobById($id) {
 		$jobs = $this->getJobByIds([ $id ])['jobs'];
@@ -49,20 +49,20 @@ class Network {
 			throw new Exception("Job with id {$id} not found");
 
 		return $jobs[0];
-		}
+	}
 
 	public function getJobsByIds($ids) {
 		return $this->get([
 			"type"	=> "jobs",
 			"ids"	=> $ids
-			]);
-		}
+		]);
+	}
 
 	public function getAllJobs() {
 		return $this->get([
 			"type"	=> "jobs"
-			]);
-		}
+		]);
+	}
 
 	public function sendJob($job) {
 		$ret = $this->execute($job->getJSON(), false);
@@ -73,27 +73,27 @@ class Network {
 			throw new Exception($ret['error']);
 
 		return $ret;
-		}
+	}
 
 	public function restartErrors($ids) {
 		$this->action('jobs', $ids, [
 			'operation' => [
 				'type' => 'restart_errors',
-				]
-			]);
-		}
+			]
+		]);
+	}
 
 	public function resetErrorHosts($ids) {
 		$this->action('jobs', $ids, [
 			'operation' => [
 				'type' => 'reset_error_hosts',
-				]
-			]);
-		}
+			]
+		]);
+	}
 
 	public function get($filters, $json_encode = true) {
 		return $this->execute([ 'get' => $filters ], $json_encode);
-		}
+	}
 
 	public function action($type, $ids, $options, $json_encode = true) {
 		return $this->execute([
@@ -102,9 +102,9 @@ class Network {
 				'host_name' => $this->hostName,
 				'type' => $type,
 				'ids' => $ids
-				]),
-			], $json_encode);
-		}
+			]),
+		], $json_encode);
+	}
 
 	protected function execute($message, $json_encode = true) {
 		$this->connect();
@@ -113,7 +113,7 @@ class Network {
 		$ret = $this->getResponse();
 		$this->disconnect();
 		return $ret;
-		}
+	}
 
 	private function connect() {
 		// echo "Connecting to '$this->address' on port '$this->port'...\n";
@@ -129,7 +129,7 @@ class Network {
 			throw new Exception("Not able to connect: " . socket_strerror(socket_last_error($this->socket)));
 		socket_set_option($this->socket, SOL_SOCKET, SO_RCVTIMEO, ['sec' => Network::TIMEOUT, 'usec' => 0]);
 		$this->connected = true;
-		}
+	}
 
 	private function disconnect() {
 		if ( !$this->socket )
@@ -138,7 +138,7 @@ class Network {
 		socket_close($this->socket);
 		$this->socket = false;
 		$this->connected = false;
-		}
+	}
 
 	private function sendMessage($message, $json_encode = true) {
 		if ( $json_encode )
@@ -154,7 +154,7 @@ class Network {
 		$in = $header . $json;
 		socket_write($this->socket, $in, strlen($in));
 		// echo " OK\n";
-		}
+	}
 
 	private function getResponse() {
 		if (! $this->connected)
@@ -187,8 +187,8 @@ class Network {
 					break;
 				default:
 					throw new Exception("wrong parsing result");
-				}
 			}
+		}
 		while( $pos === false );
 
 		$json_size = 0;
@@ -197,9 +197,7 @@ class Network {
 			$data = socket_read($this->socket, $json_size);
 			$json_size -= strlen($data);
     		$response .= $data;
-			}
-		return json_decode($response, true);
 		}
+		return json_decode($response, true);
 	}
-
-?>
+}

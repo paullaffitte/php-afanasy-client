@@ -19,18 +19,18 @@ class AfanasyTest extends TestCase {
 		Dotenv::createImmutable(__DIR__)->load();
 		$this->network = new Network(getenv('AF_SERVER'), getenv('AF_SERVERPORT'), getenv('AF_USER'));
 		$this->jobCount = 1;
-		}
+	}
 
 	public function tearDown() {
 		$jobs = $this->network->getAllJobs()['jobs'];
 		$this->network->deleteJobs(array_column($jobs, 'id'));
-		}
+	}
 
 	public function testJobCount() {
 		$jobs = $this->network->getAllJobs()['jobs'];
 		$jobCount = count($jobs);
 		$this->assertEquals($this->jobCount, $jobCount); // There is always at least 1 job running (the afadmin job)
-		}
+	}
 
 	public function testSendAndDeleteJobs() {
 		$job = new Job("testSendAndDeleteJobs");
@@ -47,7 +47,7 @@ class AfanasyTest extends TestCase {
 			$this->assertIsArray($response);
 			$this->assertArrayHasKey('id', $response);
 			$this->assertEquals($this->jobCount, $response['id']);
-			}
+		}
 
 		$this->testJobCount();
 
@@ -57,10 +57,10 @@ class AfanasyTest extends TestCase {
 
 			$this->assertIsArray($response);
 			$this->assertEquals(1, count($response));
-			}
+		}
 
 		$this->testJobCount();
-		}
+	}
 
 	public function testGetJobById() {
 		$job = new Job("testGetJobById");
@@ -75,7 +75,7 @@ class AfanasyTest extends TestCase {
 		$job = $this->network->getJobById($response['id']);
 
 		$this->assertArrayHasKey('blocks', $job);
-		}
+	}
 
 	public function testRestartErrors() {
 		$job = new Job("testRestartErrors");
@@ -92,7 +92,7 @@ class AfanasyTest extends TestCase {
 			if ( array_key_exists('p_error_hosts', $blockResponse) && $blockResponse['p_error_hosts'] > 0 )
 				break;
 			sleep(1);
-			}
+		}
 		$this->assertArrayHasKey('p_error_hosts', $blockResponse);
 		$this->assertGreaterThan(0, $blockResponse['p_error_hosts']);
 
@@ -102,12 +102,12 @@ class AfanasyTest extends TestCase {
 			if ( States::arrayHasState($jobResponse, States::ERROR) )
 				break;
 			sleep(1);
-			}
+		}
 		$this->assertTrue(States::arrayHasState($jobResponse, States::ERROR));
 
 		$this->network->restartErrors([$response['id']]);
 		$jobResponse = $this->network->getJobById($response['id']);
 		$this->assertTrue(States::arrayHasState($jobResponse, States::READY));
 		$this->assertFalse(States::arrayHasState($jobResponse, States::ERROR));
-		}
 	}
+}

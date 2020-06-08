@@ -17,7 +17,5 @@ class States {
 		return array_key_exists('state', $array)
 			? in_array($state, explode(' ', $array['state']))
 			: false;
-		}
 	}
-
-?>
+}

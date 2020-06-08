@@ -18,14 +18,14 @@ class Block {
 
 		$this->setService($service);
 		$this->setParser('generic');
-		}
+	}
 
 	public function getData() {
 		if ( !count($this->tasks) )
 			throw new Exception("zero task block");
 
 		return $this->data;
-		}
+	}
 
 	public function fromJSON($json) {
 		$this->data = $json;
@@ -34,7 +34,7 @@ class Block {
 			foreach ($json['tasks'] as $task)
 				$this->tasks[] = (new Block())->fromJSON($task);
 		return $this;
-		}
+	}
 
 	public function addTask(&$task) {
 		$this->tasks[] = $task;
@@ -44,13 +44,13 @@ class Block {
 		if ( empty($service) )
 			throw new Exception("service can not be empty");
 		$this->data["service"] = $service;
-		}
+	}
 
 	public function setParser($parser, $nocheck=true) {
 		if ( empty($parser) )
 			throw new Exception("parser can not be empty");
 		$this->data["parser"] = $parser;
-		}
+	}
 
 	public function setNumeric($start=1, $end=1, $pertask=1, $increment=1) {
 		if ( count($this->tasks) )
@@ -65,9 +65,7 @@ class Block {
 		$this->data["frame_last"] = $end;
 		$this->data["frames_per_task"] = $pertask;
 		$this->data["frames_inc"] = $increment;
-		}
-
-
+	}
 
 	// public function setFramesPerTask(, value)
 	// {
@@ -80,7 +78,6 @@ class Block {
 	// 	"""
 	// 	$this->data["frames_per_task"] = value
 
-
 	// public function setSequential(, value)
 	// {
 
@@ -92,12 +89,10 @@ class Block {
 	// 	"""
 	// 	$this->data["sequential"] = value
 
-
 	public function setCapacity($capacity) {
 		if ( $capacity > 0 )
 			$this->data["capacity"] = $capacity;
-		}
-
+	}
 
 	// public function setVariableCapacity(, capacity_coeff_min, capacity_coeff_max)
 	// {
@@ -115,11 +110,11 @@ class Block {
 
 	public function setWorkingDirectory($working_directory, $transfertoserver=false) {
 		$this->data["working_directory"] = $working_directory;
-		}
+	}
 
 	public function setCommand($command, $prefix=false, $transfertoserver=false) {
 		$this->data["command"] = $command;
-		}
+	}
 
 	// public function setCmdPre(, command_pre, TransferToServer=True)
 	// {
@@ -155,8 +150,8 @@ class Block {
 
 		foreach($files as $afile) {
 			$this->data["files"][] = $afile;
-			}
 		}
+	}
 
 	// public function setName(, value)
 	// {
@@ -237,11 +232,11 @@ class Block {
 
 	public function setNeedHDD($value) {
 		$this->data["need_hdd"] = $value;
-		}
+	}
 
 	public function setNeedMemory($value) {
 		$this->data["need_memory"] = $value;
-		}
+	}
 
 
 	// public function setNeedPower(, value)
@@ -329,7 +324,7 @@ class Block {
 	public function setDependMask($value) {
 		if ( Utils::checkRegExp($value) )
 			$this->data["depend_mask"] = $value;
-		}
+	}
 
 
 	// public function setTasksDependMask(, value)
@@ -421,7 +416,5 @@ class Block {
 			$this->data["tasks"] = [];
 			foreach($this->tasks as $task)
 				array_push($this->data["tasks"], $task->getData());
-		}
 	}
-
-?>
+}

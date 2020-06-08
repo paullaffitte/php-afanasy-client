@@ -19,25 +19,25 @@ class Job {
 		$this->data["time_creation"]	= time();
 		if ( $jobname )
 			$this->setName($jobname);
-		}
+	}
 
 	public function addBlock(&$block) {
 		$this->blocks[] = $block;
-		}
+	}
 
 	public function getBlocks() {
 		return $this->blocks;
-		}
+	}
 
 	public function setName($name) {
 		if ( $name and strlen($name) )
 			$this->data["name"] = $name;
-		}
+	}
 
 	public function setUserName($username) {
 		if ( $username and strlen($username) )
 			$this->data["user_name"] = strtolower($username);
-		}
+	}
 
 	public function setPriority($priority) {
 		if ( $priority < 0)
@@ -46,11 +46,10 @@ class Job {
 		if ( $priority > 250 ) {
 			$priority = 250;
 			print("Warning: priority clamped to maximum = {$priority}");
-			}
-
-		$this->data["priority"] = $priority;
 		}
 
+		$this->data["priority"] = $priority;
+	}
 
 	// public function setCmdPre(, command, TransferToServer=True)
 	// {
@@ -65,7 +64,6 @@ class Job {
 	// 	$this->data["command_pre"] = command
 	// }
 
-
 	// public function setCmdPost(, command, TransferToServer=True)
 	// {
 	// 	"""Missing DocString
@@ -79,30 +77,29 @@ class Job {
 	// 	$this->data["command_post"] = command
 	// }
 
-
 	public function setFolder($i_name, $i_folder, $i_transferToServer=false) {
 		if ( ! array_key_exists("folders", $this->data) )
 			$this->data["folders"] = [];
 
 		$this->data["folders"][$i_name] = $i_folder;
-		}
+	}
 
 	public function fillBlocks() {
 		$this->data["blocks"] = [];
 		foreach($this->blocks as $block) {
 			$block->fillTasks();
 			$this->data["blocks"][] = $block->getData();
-			}
 		}
+	}
 
 	public function output() {
 		print(json_encode($this->getData(), $options=JSON_PRETTY_PRINT));
-		}
+	}
 
 	public function getJSON() {
 		$obj = array("job" => $this->getData());
 		return json_encode($obj);
-		}
+	}
 
 	public function fromJSON($json) {
 		$this->data = $json;
@@ -111,7 +108,7 @@ class Job {
 			foreach ($json['blocks'] as $block)
 				$this->blocks[] = (new Block())->fromJSON($block);
 		return $this;
-		}
+	}
 
 	public function getData() {
 		if ( !count($this->blocks) )
@@ -127,20 +124,19 @@ class Job {
 				$data = $block->getData();
 				if ( in_array("files", $data) and count($data["files"]) )
 					$this->data["folders"]["output"] = dirname( $data["files"][0] );
-				}
 			}
-		return $this->data;
 		}
+		return $this->data;
+	}
 
 	public function setAnnotation($value) {
 		$this->data["annotation"] = $value;
-		}
+	}
 
 
 	public function setDescription($value) {
 		$this->data["description"] = $value;
-		}
-
+	}
 
 	// public function setWaitTime(, value)
 	// {
@@ -153,7 +149,6 @@ class Job {
 	// 		$this->data["time_wait"] = value
 	// }
 
-
 	// public function setMaxRunningTasks(, value)
 	// {
 	// 	"""Missing DocString
@@ -164,7 +159,6 @@ class Job {
 	// 	if value >= 0:
 	// 		$this->data["max_running_tasks"] = value
 	// }
-
 
 	// public function setMaxRunTasksPerHost(, value)
 	// {
@@ -177,11 +171,10 @@ class Job {
 	// 		$this->data["max_running_tasks_per_host"] = value
 	// }
 
-
 	public function setHostsMask($value) {
 		if ( Utils::checkRegExp($value) )
 			$this->data["hosts_mask"] = $value;
-		}
+	}
 
 
 	// public function setHostsMaskExclude(, value)
@@ -316,6 +309,4 @@ class Job {
 	// 	if str(value).isdigit():
 	// 		$this->data['time_life'] = value
 	// }
-	}
-
-?>
+}
