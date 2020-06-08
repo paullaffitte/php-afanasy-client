@@ -32,7 +32,7 @@ class Socket {
 		$result = socket_connect($this->socket, $this->address, $this->port);
 		if ($result === false)
 			throw new Exception("Not able to connect: " . socket_strerror(socket_last_error($this->socket)));
-		socket_set_option($this->socket, SOL_SOCKET, SO_RCVTIMEO, ['sec' => Network::TIMEOUT, 'usec' => 0]);
+		socket_set_option($this->socket, SOL_SOCKET, SO_RCVTIMEO, ['sec' => self::TIMEOUT, 'usec' => 0]);
 		$this->connected = true;
 	}
 
