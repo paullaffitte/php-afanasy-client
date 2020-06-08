@@ -7,7 +7,7 @@ use Exception;
 class Network extends BaseNetwork {
 
 	public function __construct($address, $port, $user='coord@pc') {
-        parent::__construct($address, $port, $user);
+		parent::__construct($address, $port, $user);
 	}
 
 	public function deleteJob($id) {
@@ -15,17 +15,13 @@ class Network extends BaseNetwork {
 	}
 
 	public function deleteJobs($ids) {
-		return $this->action('jobs', $ids, [
-			'operation' => [
-				'type'	=> 'delete',
-			]
-		]);
+		return $this->delete('jobs', $ids);
 	}
 
 	public function getJobsByUser($user) {
 		return $this->get([
-			"type"		=> "jobs",
-			"user_name"	=> $user
+			'type'		=> 'jobs',
+			'user_name'	=> $user
 		]);
 	}
 
@@ -40,22 +36,20 @@ class Network extends BaseNetwork {
 
 	public function getJobsByIds($ids) {
 		return $this->get([
-			"type"	=> "jobs",
-			"ids"	=> $ids
+			'type'	=> 'jobs',
+			'ids'	=> $ids
 		]);
 	}
 
 	public function getAllJobs() {
-		return $this->get([
-			"type"	=> "jobs"
-		]);
+		return $this->getAll('jobs');
 	}
 
 	public function sendJob($job) {
 		$ret = $this->execute($job->getJSON(), false);
 
 		if ( !is_array($ret) )
-			throw new Exception("invalid response from server");
+			throw new Exception('invalid response from server');
 		if ( array_key_exists('error', $ret) )
 			throw new Exception($ret['error']);
 
@@ -75,6 +69,28 @@ class Network extends BaseNetwork {
 			'operation' => [
 				'type' => 'reset_error_hosts',
 			]
+		]);
+	}
+
+	public function pauseJobs($ids) {
+		return $this->action('jobs', $ids, [
+			'operation' => [ 'type' => 'pause' ],
+		]);
+	}
+
+	public function getRenders() {
+		return $this->getAll('renders');
+	}
+
+	public function deleteRenders($ids) {
+		return $this->delete('renders', $ids);
+	}
+
+	public function updateRendersCapacity($ids, $capacity) {
+		return $this->action('renders', $ids, [
+			'params' => [
+				'capacity' => $capacity
+			],
 		]);
 	}
 }

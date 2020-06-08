@@ -161,4 +161,51 @@ class PayloadTest extends TestCase {
 		]));
 		$this->network->restartErrorHosts($ids);
 	}
+
+	public function testPauseJobs() {
+		$ids = randomIds();
+		$this->sendMock->with(actionPayload([
+			'type' => 'jobs',
+			'ids' => $ids,
+			'operation' => [
+				'type' => 'pause',
+			],
+		]));
+		$this->network->pauseJobs($ids);
+	}
+
+	public function testGetRenders() {
+		$ids = randomIds();
+		$this->sendMock->with([
+			'get' => [
+				'type' => 'renders',
+			]
+		]);
+		$this->network->getRenders();
+	}
+
+	public function testDeleteRenders() {
+		$ids = randomIds();
+		$this->sendMock->with(actionPayload([
+			'type' => 'renders',
+			'ids' => $ids,
+			'operation' => [
+				'type' => 'delete',
+			],
+		]));
+		$this->network->deleteRenders($ids);
+	}
+
+	public function testUpdateRendersCapacity() {
+		$ids = randomIds();
+		$capacity = rand();
+		$this->sendMock->with(actionPayload([
+			'type' => 'renders',
+			'ids' => $ids,
+			'params' => [
+				'capacity' => $capacity,
+			],
+		]));
+		$this->network->updateRendersCapacity($ids, $capacity);
+	}
 }
