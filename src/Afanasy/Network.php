@@ -51,10 +51,10 @@ class Network {
 		return $jobs[0];
 		}
 
-	public function getJobByIds($ids) {
+	public function getJobsByIds($ids) {
 		return $this->get([
-			"type"		=> "jobs",
-			"ids"		=> $ids
+			"type"	=> "jobs",
+			"ids"	=> $ids
 			]);
 		}
 
@@ -83,7 +83,7 @@ class Network {
 			]);
 		}
 
-	public function restartErrorHosts($ids) {
+	public function resetErrorHosts($ids) {
 		$this->action('jobs', $ids, [
 			'operation' => [
 				'type' => 'reset_error_hosts',
