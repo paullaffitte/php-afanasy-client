@@ -1,8 +1,8 @@
 {
-    "name": "abuisine/php-afanasy-client",
+    "name": "paullaffitte/php-afanasy-client",
     "description": "A PHP rewrite of the Afanasy python client",
     "type": "library",
-    "homepage": "https://github.com/abuisine/php-afanasy-client",
+    "homepage": "https://github.com/paullaffitte/php-afanasy-client",
     "license": "GPL-3.0",
     "authors": [
         {
